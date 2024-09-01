@@ -3,7 +3,7 @@ function customOnEdit(e) {
   var range = e.range;
 
   // Check if the edit occurred in Column Z (Planned Start Date) and not the header row
-  if (sheet.getName() === 'Sheet1' && range.getColumn() == 26 && range.getRow() > 1) { // Z is the 26th column
+  if (sheet.getName() === 'Form Responses 1' && range.getColumn() == 26 && range.getRow() > 1) { // Z is the 26th column
     var row = range.getRow(); // Identify the row of concern
     
     var email = sheet.getRange(row, 2).getValue(); // Email Address (Column B)
