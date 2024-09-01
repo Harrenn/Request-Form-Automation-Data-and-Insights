@@ -1,0 +1,3 @@
+function authorizeMailApp() {
+  MailApp.sendEmail('your.email@example.com', 'Authorization Test', 'This is a test email for authorization purposes.');
+}
