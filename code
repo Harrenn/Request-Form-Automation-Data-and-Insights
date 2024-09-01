@@ -1,0 +1,51 @@
+function customOnEdit(e) {
+  var sheet = e.source.getActiveSheet();
+  var range = e.range;
+
+  // Check if the edit occurred in Column Z (Planned Start Date) and not the header row
+  if (sheet.getName() === 'Sheet1' && range.getColumn() == 26 && range.getRow() > 1) { // Z is the 26th column
+    var row = range.getRow(); // Identify the row of concern
+    
+    var email = sheet.getRange(row, 2).getValue(); // Email Address (Column B)
+    var requestId = sheet.getRange(row, 23).getValue(); // Request ID (Column W)
+    var requestType = sheet.getRange(row, 7).getValue(); // Request Type (Column G)
+    var metrics = sheet.getRange(row, 11).getValue(); // Metrics Associated with the Objectives. Select all that apply. (Column K)
+    var completeName = sheet.getRange(row, 3).getValue(); // Complete Name (Column C)
+    var assignedTo = sheet.getRange(row, 21).getValue(); // Assigned To (Column U)
+    var complexity = sheet.getRange(row, 24).getValue(); // Complexity (Column X)
+    var sla = sheet.getRange(row, 25).getValue(); // SLA (computed) (Column Y)
+    var plannedStartDate = sheet.getRange(row, 26).getValue(); // Planned Start Date (Column Z)
+    var endDate = sheet.getRange(row, 27).getValue(); // Communicated End Date (computed) (Column AA)
+    
+    if (email) {
+      var subject = "[" + requestId + "] Request for " + requestType + " - " + metrics;
+      var body = generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate);
+      
+      // Send the email with HTML body content
+      MailApp.sendEmail({
+        to: email,
+        subject: subject,
+        htmlBody: body
+      });
+    }
+  }
+}
+
+// Helper function to generate the email body based on the provided data
+function generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate) {
+  var formattedPlannedStartDate = Utilities.formatDate(new Date(plannedStartDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
+  var formattedEndDate = Utilities.formatDate(new Date(endDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
+
+  var body = "<p style='color: black;'>Hi " + completeName + ",</p>";
+  
+  body += "<p style='color: black;'>We are now processing your request for data analysis. The assignee will communicate with you for additional details on your request.</p>";
+  body += "<p style='color: black;'>Assignee: " + assignedTo + "<br>";
+  body += "Complexity: " + complexity + "<br>";
+  body += "SLA: " + sla + " working days<br>";
+  body += "Planned start date: " + formattedPlannedStartDate + "<br>";
+  body += "Expected completion date: " + formattedEndDate + "<br>";
+  body += "Remarks:</p>";
+  body += "<p style='color: black;'>Regards,<br>Data and Insights Team</p>";
+
+  return body;
+}
