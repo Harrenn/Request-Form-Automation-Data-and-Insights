@@ -17,7 +17,7 @@ The script uses the following columns from the Google Sheet:
 
 - **Email Address:** Column B
 - **Request Type:** Column G
-- **Metrics Associated with the Objectives:** Column K
+- **Metrics Associated with the Objectives:** Column I
 - **Complete Name:** Column C
 - **Assigned To:** Column U
 - **Complexity:** Column X
@@ -29,7 +29,7 @@ The script uses the following columns from the Google Sheet:
 ## How It Works
 
 1. **Trigger Setup:**
-   - The script is triggered by edits made in the "Planned Start Date" column (Column Z). When a user updates or enters a date in this column, the script automatically runs.
+   - The script is triggered when a checkbox in the "Send Email" column (Column AD) is checked. Once the checkbox is checked, the script automatically runs.
 
 2. **Data Retrieval:**
    - When the script is triggered, it retrieves the necessary data from the following columns in the same row: Email Address (B), Request ID (W), Request Type (G), Metrics (K), Complete Name (C), Assigned To (U), Complexity (X), SLA (Y), Planned Start Date (Z), and Communicated End Date (AA).
