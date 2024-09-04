@@ -18,10 +18,11 @@ function customOnEdit(e) {
       var sla = sheet.getRange(row, 25).getValue(); // SLA (computed) (Column Y)
       var plannedStartDate = sheet.getRange(row, 26).getValue(); // Planned Start Date (Column Z)
       var endDate = sheet.getRange(row, 27).getValue(); // Communicated End Date (computed) (Column AA)
+      var remarks = sheet.getRange(row, 20).getValue(); // Remarks on Decision (Column T)
       
       if (email) {
         var subject = "[" + requestId + "] Request for " + requestType + " - " + Requesttitle;
-        var body = generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate);
+        var body = generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks);
         
         // Send the email with HTML body content
         MailApp.sendEmail({
@@ -35,7 +36,7 @@ function customOnEdit(e) {
 }
 
 // Helper function to generate the email body based on the provided data
-function generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate) {
+function generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks) {
   var formattedPlannedStartDate = Utilities.formatDate(new Date(plannedStartDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
   var formattedEndDate = Utilities.formatDate(new Date(endDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
 
@@ -47,7 +48,7 @@ function generateEmailBody(completeName, assignedTo, complexity, sla, plannedSta
   body += "SLA: " + sla + " working days<br>";
   body += "Planned start date: " + formattedPlannedStartDate + "<br>";
   body += "Expected completion date: " + formattedEndDate + "<br>";
-  body += "Remarks:</p>";
+  body += "Remarks: " + remarks + "</p>";
   body += "<p style='color: black;'>Regards,<br>Data and Insights Team</p>";
 
   return body;
