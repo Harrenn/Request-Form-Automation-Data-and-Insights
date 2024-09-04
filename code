@@ -11,7 +11,7 @@ function customOnEdit(e) {
       var email = sheet.getRange(row, 2).getValue(); // Email Address (Column B)
       var requestId = sheet.getRange(row, 23).getValue(); // Request ID (Column W)
       var requestType = sheet.getRange(row, 7).getValue(); // Request Type (Column G)
-      var metrics = sheet.getRange(row, 9).getValue(); // Request Background Provide context of the request. (Column I)
+      var Requesttitle = sheet.getRange(row, 40).getValue(); // Request title. (Column AN)
       var completeName = sheet.getRange(row, 3).getValue(); // Complete Name (Column C)
       var assignedTo = sheet.getRange(row, 21).getValue(); // Assigned To (Column U)
       var complexity = sheet.getRange(row, 24).getValue(); // Complexity (Column X)
@@ -20,7 +20,7 @@ function customOnEdit(e) {
       var endDate = sheet.getRange(row, 27).getValue(); // Communicated End Date (computed) (Column AA)
       
       if (email) {
-        var subject = "[" + requestId + "] Request for " + requestType + " - " + metrics;
+        var subject = "[" + requestId + "] Request for " + requestType + " - " + Requesttitle;
         var body = generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate);
         
         // Send the email with HTML body content
