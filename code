@@ -11,7 +11,7 @@ function customOnEdit(e) {
       var email = sheet.getRange(row, 2).getValue(); // Email Address (Column B)
       var requestId = sheet.getRange(row, 23).getValue(); // Request ID (Column W)
       var requestType = sheet.getRange(row, 7).getValue(); // Request Type (Column G)
-      var Requesttitle = sheet.getRange(row, 40).getValue(); // Request title. (Column AN)
+      var requestTitle = sheet.getRange(row, 40).getValue(); // Request title. (Column AN)
       var completeName = sheet.getRange(row, 3).getValue(); // Complete Name (Column C)
       var assignedTo = sheet.getRange(row, 21).getValue(); // Assigned To (Column U)
       var complexity = sheet.getRange(row, 24).getValue(); // Complexity (Column X)
@@ -21,35 +21,34 @@ function customOnEdit(e) {
       var remarks = sheet.getRange(row, 20).getValue(); // Remarks on Decision (Column T)
       
       if (email) {
-        var subject = "[" + requestId + "] Request for " + requestType + " - " + Requesttitle;
-        var body = generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks);
+        var subject = "[" + requestId + "] Request for " + requestType + " - " + requestTitle;
+        var body = generatePlainTextBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks);
         
-        // Send the email with HTML body content
+        // Send the email with plain text content
         MailApp.sendEmail({
           to: email,
           subject: subject,
-          htmlBody: body
+          body: body // Using "body" instead of "htmlBody" for plain text emails
         });
       }
     }
   }
 }
 
-// Helper function to generate the email body based on the provided data
-function generateEmailBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks) {
+// Helper function to generate the plain text email body
+function generatePlainTextBody(completeName, assignedTo, complexity, sla, plannedStartDate, endDate, remarks) {
   var formattedPlannedStartDate = Utilities.formatDate(new Date(plannedStartDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
   var formattedEndDate = Utilities.formatDate(new Date(endDate), Session.getScriptTimeZone(), "EEE MMM dd yyyy");
 
-  var body = "<p style='color: black;'>Hi " + completeName + ",</p>";
-  
-  body += "<p style='color: black;'>We are now processing your request for data analysis. The assignee will communicate with you for additional details on your request.</p>";
-  body += "<p style='color: black;'>Assignee: " + assignedTo + "<br>";
-  body += "Complexity: " + complexity + "<br>";
-  body += "SLA: " + sla + " working days<br>";
-  body += "Planned start date: " + formattedPlannedStartDate + "<br>";
-  body += "Expected completion date: " + formattedEndDate + "<br>";
-  body += "Remarks: " + remarks + "</p>";
-  body += "<p style='color: black;'>Regards,<br>Data and Insights Team</p>";
+  var body = "Hi " + completeName + ",\n\n";
+  body += "We are now processing your request for data analysis. The assignee will communicate with you for additional details on your request.\n\n";
+  body += "Assignee: " + assignedTo + "\n";
+  body += "Complexity: " + complexity + "\n";
+  body += "SLA: " + sla + " working days\n";
+  body += "Planned start date: " + formattedPlannedStartDate + "\n";
+  body += "Expected completion date: " + formattedEndDate + "\n";
+  body += "Remarks: " + remarks + "\n\n";
+  body += "Best regards,\nData and Insights Team\n";
 
   return body;
 }
